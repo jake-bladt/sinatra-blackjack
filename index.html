@@ -13,7 +13,7 @@
          success: function(data) {
            var $myCards = $('#myCards');
            $(data.cards).each(function() {
-             var cardElem = "<p>" + this + "</p>"
+             var cardElem = "<embed type='image/svg+xml' src='cards/" + this + ".svg' />"
              $myCards.append(cardElem);
            });
          },
