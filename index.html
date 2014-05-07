@@ -11,7 +11,11 @@
          dataType: 'text json',
          url: 'http://localhost:4567/cards',
          success: function(data) {
-           alert("cards: " + data);
+           var $myCards = $('#myCards');
+           $(data.cards).each(function() {
+             var cardElem = "<p>" + this + "</p>"
+             $myCards.append(cardElem);
+           });
          },
          error: function(xhr, status, err) {
            alert(status + ': ' + err + '. ' + xhr.responseText);
@@ -23,5 +27,6 @@
   </head>
   <body>
     <h1>Blackjack</h1>
+    <div id='myCards'></div>
   </body>
 </html>
