@@ -2,5 +2,25 @@
 <html>
   <head>
     <title>Blackjack</title>
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script type='text/javascript'>
+
+    $(document).ready(function() {
+       $.ajax({
+         type: 'GET',
+         url: 'http://localhost:4567/cards',
+         success: function(data) {
+           alert("cards: " + data);
+         },
+         error: function(xhr, status, err) {
+           alert(status + ': ' + err);
+         }
+       });
+    });
+
+    </script>
   </head>
+  <body>
+    <h1>Blackjack</h1>
+  </body>
 </html>

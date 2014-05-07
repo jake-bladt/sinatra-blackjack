@@ -4,7 +4,7 @@ require 'sinatra/json'
 class Blackjack < Sinatra::Base
   helpers Sinatra::JSON
 
-  get '/' do
+  get '/cards' do
   	json :cards => ['Ah', 'Kd']
   end
 

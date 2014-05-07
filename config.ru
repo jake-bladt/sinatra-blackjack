@@ -1,0 +1,2 @@
+require './blackjack'
+run Blackjack
