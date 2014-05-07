@@ -12,9 +12,9 @@ class Blackjack < Sinatra::Base
   	content_type :json
   end
 
-  get '/cards' do
+  get '/cards/:count' do
   	cards = []
-  	2.times { cards.push get_card }
+  	params[:count].to_i.times { cards.push get_card }
   	json :cards => cards
   end
 

@@ -9,7 +9,7 @@
        $.ajax({
          type: 'GET',
          dataType: 'text json',
-         url: 'http://localhost:4567/cards',
+         url: 'http://localhost:4567/cards/3',
          success: function(data) {
            var $myCards = $('#myCards');
            $(data.cards).each(function() {
