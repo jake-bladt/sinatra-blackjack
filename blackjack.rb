@@ -6,7 +6,7 @@ class Blackjack < Sinatra::Base
 
   before do
     @faces = "A23456789TJQK".scan(/./)
-    @suits = "CDHS".scan(/./)
+    @suits = "cdhs".scan(/./)
 
   	response.headers['Access-Control-Allow-Origin'] = '*'
   	content_type :json

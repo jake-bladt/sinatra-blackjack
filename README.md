@@ -14,3 +14,5 @@ Install the required gems:
   gem install sinatra-contrib
   gem install thin
 ```
+
+Cards courtesy of jfitz.com
