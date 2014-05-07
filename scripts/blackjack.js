@@ -1,3 +1,7 @@
+var BlackjackView = function(){}
+
+(function(BlackjackView, $) {
+
     $(document).ready(function() {
        $.ajax({
          type: 'GET',
@@ -15,3 +19,5 @@
          }
        });
     });
+
+})(BlackjackView, jQuery);
