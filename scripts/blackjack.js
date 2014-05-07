@@ -6,6 +6,12 @@ var BlackjackView = function(){};
     "player": [],
     "dealer": []
   };
+
+  var record = {
+    wins: 0,
+    losses: 0,
+    ties: 0
+  }
   
   BlackjackView.getCardImage = function(card) {
     return "<img src='cards/" + card + ".png' />";
@@ -78,8 +84,15 @@ var BlackjackView = function(){};
      });
    };
 
-  // Set initial game
   $(document).ready(function() {
+    // element behaviors
+    $('#hit').click(function(e) {
+      e.preventDefault();
+      BlackjackView.dealCards(1, '#playerCards', 'player');
+      BlackjackView.updateHandValues();
+    });
+
+    // Set initial game
     BlackjackView.dealCards(1, '#dealerCards', 'dealer');
     BlackjackView.dealCards(2, '#playerCards', 'player');
     BlackjackView.updateHandValues();
