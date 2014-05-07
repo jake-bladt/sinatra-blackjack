@@ -48,6 +48,7 @@ var BlackjackView = function(){};
      var ret = val.value;
      
      if(val.isSoft == true) ret = "a soft " + ret;
+     if(val.value == 21 && cards.length == 2) ret = "blackjack";
 
      return ret;
    };
