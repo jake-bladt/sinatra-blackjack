@@ -8,12 +8,13 @@
     $(document).ready(function() {
        $.ajax({
          type: 'GET',
+         dataType: 'text json',
          url: 'http://localhost:4567/cards',
          success: function(data) {
            alert("cards: " + data);
          },
          error: function(xhr, status, err) {
-           alert(status + ': ' + err);
+           alert(status + ': ' + err + '. ' + xhr.responseText);
          }
        });
     });
