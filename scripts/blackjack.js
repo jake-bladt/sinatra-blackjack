@@ -1,23 +1,33 @@
-var BlackjackView = function(){}
+var BlackjackView = function(){};
 
 (function(BlackjackView, $) {
+  
+  BlackjackView.getCardImage = function(card) {
+    return "<img src='cards/" + card + ".png' />";
+  };
 
-    $(document).ready(function() {
-       $.ajax({
-         type: 'GET',
-         dataType: 'text json',
-         url: 'http://localhost:4567/cards/3',
-         success: function(data) {
-           var $myCards = $('#myCards');
-           $(data.cards).each(function() {
-             var cardElem = "<img src='cards/" + this + ".png' />"
-             $myCards.append(cardElem);
-           });
-         },
-         error: function(xhr, status, err) {
-           alert(status + ': ' + err + '. ' + xhr.responseText);
-         }
-       });
-    });
+  BlackjackView.dealCards = function(cardCount, domElem, setName) {
+     $.ajax({
+       type: 'GET',
+       dataType: 'text json',
+       url: 'http://localhost:4567/cards/' + cardCount,
+       success: function(data) {
+         var $cardsElem = $(domElem);
+         $(data.cards).each(function() {
+           var cardElem = BlackjackView.getCardImage(this);
+           $cardsElem.append(cardElem);
+         });
+       },
+       error: function(xhr, status, err) {
+         alert('Failed to draw cards for ' + setName);
+       }
+     });
+   };
+
+  // Set initial game
+  $(document).ready(function() {
+    BlackjackView.dealCards(1, '#dealerCards', 'dealer');
+    BlackjackView.dealCards(2, '#playerCards', 'player');
+  });
 
 })(BlackjackView, jQuery);
