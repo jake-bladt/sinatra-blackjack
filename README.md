@@ -12,4 +12,5 @@ Install the required gems:
 ```
   gem install sinatra
   gem install sinatra-contrib
+  gem install thin
 ```
