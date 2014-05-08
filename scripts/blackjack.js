@@ -37,7 +37,9 @@ var BlackjackView = function(){};
      };
 
      $(cards).each(function() {
-       ret.value += BlackjackView.getCardValue(this);
+       var cardVal = BlackjackView.getCardValue(this);
+       if(cardVal == 11 && ret.isSoft == true) cardVal = 1;
+       ret.value += cardVal;
        if(this.charAt(0) == 'A') ret.isSoft = true;
      });
 
@@ -115,9 +117,13 @@ var BlackjackView = function(){};
      }
    };
 
-   BlackjackView.updateOnBust = function() {
+   BlackjackView.disableUserInput = function() {
      $('#hit').attr('disabled', 'disabled');
      $('#stand').attr('disabled', 'disabled');
+   };
+
+   BlackjackView.updateOnBust = function() {
+     BlackjackView.disableUserInput();
    };
 
     BlackjackView.evaluateBoardState = function() {
@@ -125,6 +131,10 @@ var BlackjackView = function(){};
       if(playerHandVal.value > 21) {
         BlackjackView.updateOnBust();
         BlackjackView.revealHoleCard();
+      };
+
+      if(playerHandVal.value == 21) {
+        $('#stand').click();
       };
     };
 
@@ -139,6 +149,7 @@ var BlackjackView = function(){};
 
     $('#stand').click(function(e) {
       e.preventDefault();
+      BlackjackView.disableUserInput();
       BlackjackView.revealHoleCard();
       BlackjackView.playOutDealerHand();
       BlackjackView.updateHandValues(); 
@@ -147,6 +158,7 @@ var BlackjackView = function(){};
     // Set initial game
     BlackjackView.dealCards(1, '#dealerCards', 'dealer');
     BlackjackView.dealCards(2, '#playerCards', 'player');
+    BlackjackView.evaluateBoardState();
     BlackjackView.updateHandValues();
   });
 
