@@ -115,11 +115,25 @@ var BlackjackView = function(){};
      }
    };
 
+   BlackjackView.updateOnBust = function() {
+     $('#hit').attr('disabled', 'disabled');
+     $('#stand').attr('disabled', 'disabled');
+   };
+
+    BlackjackView.evaluateBoardState = function() {
+      var playerHandVal = BlackjackView.getHandValue(allCards['player']);
+      if(playerHandVal.value > 21) {
+        BlackjackView.updateOnBust();
+        BlackjackView.revealHoleCard();
+      };
+    };
+
   $(document).ready(function() {
     // element behaviors
     $('#hit').click(function(e) {
       e.preventDefault();
       BlackjackView.dealCards(1, '#playerCards', 'player');
+      BlackjackView.evaluateBoardState();
       BlackjackView.updateHandValues();
     });
 
