@@ -84,12 +84,50 @@ var BlackjackView = function(){};
      });
    };
 
+   BlackjackView.revealHoleCard = function() {
+     $.ajax({
+       async: false,
+       type: 'GET',
+       dataType: 'text json',
+       url: 'http://localhost:4567/cards/1',
+       success: function(data) {
+         $(data.cards).each(function() {
+           allCards['dealer'].push(this);
+           var $holeCard = $('#holeCard');
+           $holeCard.attr('src', 'cards/' + this + '.png' );
+         });
+       },
+       error: function(xhr, status, err) {
+         alert('Failed to reveal hole card.');
+       }
+     });
+   };
+
+   BlackjackView.playOutDealerHand = function() {
+     var hit = true;
+     while(hit == true) {
+       var handVal = BlackjackView.getHandValue(allCards['dealer']);
+       if(handVal.value > 16) hit = false;
+       if(handVal.value == 16 && handVal.isSoft == false) hit = false;
+       if(hit == true) {
+         BlackjackView.dealCards(1, '#dealerCards', 'dealer');
+       }
+     }
+   };
+
   $(document).ready(function() {
     // element behaviors
     $('#hit').click(function(e) {
       e.preventDefault();
       BlackjackView.dealCards(1, '#playerCards', 'player');
       BlackjackView.updateHandValues();
+    });
+
+    $('#stand').click(function(e) {
+      e.preventDefault();
+      BlackjackView.revealHoleCard();
+      BlackjackView.playOutDealerHand();
+      BlackjackView.updateHandValues(); 
     });
 
     // Set initial game
