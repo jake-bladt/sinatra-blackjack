@@ -4,7 +4,7 @@ A simple blackjack server written in Sinatra. This project is meant to demonstra
 This isn't a perfect blackjack simulator. It misses some edge cases.
 
 ### Installing
-To run under vagrant, type:
+To start the vagrant VM, type:
 ```
   vagrant up
   vagrant ssh
