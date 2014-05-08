@@ -121,6 +121,11 @@ var BlackjackView = function(){};
      $('#stand').attr('disabled', 'disabled');
    };
 
+   BlackjackView.enableUserInput = function() {
+     $('#hit').removeAttr('disabled');
+     $('#stand').removeAttr('disabled');
+   };
+
    BlackjackView.hideAgain = function() {
      $('#again').hide();
    };
@@ -168,6 +173,11 @@ var BlackjackView = function(){};
 
    };
 
+   BlackjackView.getRecord = function() {
+     return 'Your record is ' + record.wins + '-' +
+      record.losses + '-' + record.ties + '.'
+   };
+
    BlackjackView.updateResult = function() {
     var playerHandVal = BlackjackView.getHandValue(allCards['player']);
     var dealerHandVal = BlackjackView.getHandValue(allCards['dealer']);
@@ -191,8 +201,7 @@ var BlackjackView = function(){};
       }
     }
 
-    $('#resultHead').text(resultMsg + ' Your record is ' + record.wins + '-' +
-      record.losses + '-' + record.ties + '.');
+    $('#resultHead').text(resultMsg + ' ' + BlackjackView.getRecord());
     BlackjackView.showAgain();
 
    };
@@ -207,6 +216,32 @@ var BlackjackView = function(){};
 
     if(playerHandVal.value == 21) {
       $('#stand').click();
+    };
+  };
+
+  BlackjackView.resetCards = function() {
+    $('#playerCards').empty();
+    $('#holeCard').attr('src', 'cards/back.png');
+    $('#dealerCards img:not(:first)').remove();
+  };
+
+  BlackjackView.dealHands = function() {
+    BlackjackView.dealCards(1, '#dealerCards', 'dealer');
+    BlackjackView.dealCards(2, '#playerCards', 'player');
+  };
+
+  BlackjackView.setInitialState = function() {
+      BlackjackView.hideAgain();
+      BlackjackView.resetCards();
+      BlackjackView.dealHands();
+      BlackjackView.evaluateBoardState();
+      BlackjackView.updateHandValues();      
+  };
+
+  BlackjackView.resetHands = function() {
+    allCards = {
+      "player": [],
+      "dealer": []
     };
   };
 
@@ -228,12 +263,16 @@ var BlackjackView = function(){};
       BlackjackView.updateResult(); 
     });
 
+    $('#again').click(function(e) {
+      e.preventDefault();
+      BlackjackView.enableUserInput();
+      BlackjackView.resetHands();
+      BlackjackView.setInitialState();
+      $('#resultHead').text(BlackjackView.getRecord());
+    });
+
     // Set initial game
-    BlackjackView.hideAgain();
-    BlackjackView.dealCards(1, '#dealerCards', 'dealer');
-    BlackjackView.dealCards(2, '#playerCards', 'player');
-    BlackjackView.evaluateBoardState();
-    BlackjackView.updateHandValues();
+    BlackjackView.setInitialState();
   });
 
 })(BlackjackView, jQuery);
