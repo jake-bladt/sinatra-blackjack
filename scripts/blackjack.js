@@ -121,6 +121,14 @@ var BlackjackView = function(){};
      $('#stand').attr('disabled', 'disabled');
    };
 
+   BlackjackView.hideAgain = function() {
+     $('#again').hide();
+   };
+
+   BlackjackView.showAgain = function() {
+     $('#again').show();
+   };
+
    BlackjackView.updateOnBust = function() {
      BlackjackView.disableUserInput();
    };
@@ -185,6 +193,7 @@ var BlackjackView = function(){};
 
     $('#resultHead').text(resultMsg + ' Your record is ' + record.wins + '-' +
       record.losses + '-' + record.ties + '.');
+    BlackjackView.showAgain();
 
    };
 
@@ -220,6 +229,7 @@ var BlackjackView = function(){};
     });
 
     // Set initial game
+    BlackjackView.hideAgain();
     BlackjackView.dealCards(1, '#dealerCards', 'dealer');
     BlackjackView.dealCards(2, '#playerCards', 'player');
     BlackjackView.evaluateBoardState();
