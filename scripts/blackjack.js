@@ -17,7 +17,6 @@ var BlackjackView = function(){};
     return "<img src='cards/" + card + ".png' />";
   };
 
-
    BlackjackView.displayCard = function(domElem, card) {
      var cardElem = BlackjackView.getCardImage(card);
      domElem.append(cardElem);
@@ -126,17 +125,81 @@ var BlackjackView = function(){};
      BlackjackView.disableUserInput();
    };
 
-    BlackjackView.evaluateBoardState = function() {
-      var playerHandVal = BlackjackView.getHandValue(allCards['player']);
-      if(playerHandVal.value > 21) {
-        BlackjackView.updateOnBust();
-        BlackjackView.revealHoleCard();
-      };
+   BlackjackView.compareHandValues = function(player, dealer) {
+     if(player > 21) return {
+       playerWin: false,
+       isBust: true,
+       isDraw: false
+     };
 
-      if(playerHandVal.value == 21) {
-        $('#stand').click();
+    if(dealer > 21) return {
+       playerWin: true,
+       isBust: true,
+       isDraw: false
+     };
+
+     if(player > dealer) return {
+       playerWin: true,
+       isBust: false,
+       isDraw: false
+     };
+
+    if(dealer > player) {
+      return {
+        playerWin: false,
+        isBust: false,
+        isDraw: false
       };
+    } else {
+      return {
+        playerWin: false,
+        isBust: false,
+        isDraw: true
+      };
+   }
+
+   };
+
+   BlackjackView.updateResult = function() {
+    var playerHandVal = BlackjackView.getHandValue(allCards['player']);
+    var dealerHandVal = BlackjackView.getHandValue(allCards['dealer']);
+    var gameResult = BlackjackView.compareHandValues(playerHandVal.value, dealerHandVal.value);
+
+    var resultMsg;
+
+    if(gameResult.isBust == true && gameResult.playerWin == true) resultMsg = "The dealer busted.";
+    if(gameResult.isBust == true && gameResult.playerWin == false) resultMsg = "You busted.";
+    if(gameResult.isBust == false && gameResult.playerWin == true) resultMsg = "You win.";
+    if(gameResult.isBust == false && gameResult.playerWin == false) resultMsg = "You lose.";
+    if(gameResult.isDraw == true) resultMsg = "Push.";
+
+    if(gameResult.playerWin == true) {
+      record.wins += 1;
+    } else {
+      if(gameResult.isDraw == true) {
+        record.ties += 1;
+      } else {
+        record.losses += 1;
+      }
+    }
+
+    $('#resultHead').text(resultMsg + ' Your record is ' + record.wins + '-' +
+      record.losses + '-' + record.ties + '.');
+
+   };
+
+  BlackjackView.evaluateBoardState = function() {
+    var playerHandVal = BlackjackView.getHandValue(allCards['player']);
+    if(playerHandVal.value > 21) {
+      BlackjackView.updateOnBust();
+      BlackjackView.revealHoleCard();
+      BlackjackView.updateResult();
     };
+
+    if(playerHandVal.value == 21) {
+      $('#stand').click();
+    };
+  };
 
   $(document).ready(function() {
     // element behaviors
@@ -152,7 +215,8 @@ var BlackjackView = function(){};
       BlackjackView.disableUserInput();
       BlackjackView.revealHoleCard();
       BlackjackView.playOutDealerHand();
-      BlackjackView.updateHandValues(); 
+      BlackjackView.updateHandValues();
+      BlackjackView.updateResult(); 
     });
 
     // Set initial game
